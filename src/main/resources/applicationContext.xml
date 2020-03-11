@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd">
+    <!--扫描除Controller以外的所有内容-->
+    <context:component-scan base-package="com.atguigu">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <!--引入properties配置文件-->
+    <context:property-placeholder location="classpath:db.properties" />
+
+    <!--配置数据源，使用C3p0连接池-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${jdbc.driver}"></property>
+        <property name="jdbcUrl" value="${jdbc.url}"></property>
+        <property name="user" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+    </bean>
+
+    <!--事务管理器-->
+    <bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <!--开启基于注解的配置-->
+    <tx:annotation-driven transaction-manager="dataSourceTransactionManager"/>
+
+
+    <!--整合Mybatis-->
+    <!--Spring一启动就会创建sqlSessionFactory对象-->
+    <!-- 
+    	mybatis提供的：org.mybatis.spring.SqlSessionFactoryBean
+    	mybatisPlus 提供的：com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean
+     -->
+    <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+        <!--配置mybatis的全局配置文件-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+        <!--配置接口对应mapper文件-->
+        <property name="mapperLocations" value="classpath:com/atguigu/mp/mapper/*.xml"></property>
+        <!--注入MybatisPlus的全局配置-->
+        <property name="globalConfig" ref="globalConfiguration"></property>
+    </bean>
+
+    <!--MybatisPlus全局配置-->
+    <bean id="globalConfiguration" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
+        <property name="dbColumnUnderline" value="true"></property>
+        <!--主键id的生成策略-->
+        <!--<property name="idType" value="0"></property>-->
+        <!--设置表明前缀（在数据库表明有统一都得情况下）-->
+       <!-- <property name="tablePrefix" value="tbl_"></property>-->
+    </bean>
+
+    <!--扫描dao接口-->
+    <bean id="configurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.atguigu.mp.mapper"></property>
+    </bean>
+    <!--mybatis提供的扫描dao接口-->
+<!--    <mybatis-spring:scan base-package="com.atguigu.mapper" />-->
+</beans>
