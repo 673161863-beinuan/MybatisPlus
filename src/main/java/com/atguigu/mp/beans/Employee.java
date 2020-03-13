@@ -11,11 +11,11 @@ import java.io.Serializable;
 /*
 * 对应数据库表
 * */
-@TableName(value = "tbl_employee")
+//@TableName(value = "tbl_employee")
 //AR模式继承Model<实体类>
 public class Employee extends Model<Employee> {
 	//已经配置全局配置取代
-	@TableId(type = IdType.AUTO)
+	//@TableId(type = IdType.AUTO)
 	private Integer id;
 
 	private String lastName;

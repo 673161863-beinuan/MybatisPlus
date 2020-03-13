@@ -43,16 +43,37 @@
         <property name="mapperLocations" value="classpath:com/atguigu/mp/mapper/*.xml"></property>
         <!--注入MybatisPlus的全局配置-->
         <property name="globalConfig" ref="globalConfiguration"></property>
+        <!--设置分页插件-->
+        <property name="plugins">
+            <list>
+                <bean class="com.baomidou.mybatisplus.plugins.PaginationInterceptor"></bean>
+                <!--拦截对数据库表的全表操作，比如删除全表。只支持MySQL 5.6.3版本以上，适合在开发环境，不适合在生产环境-->
+                <bean class="com.baomidou.mybatisplus.plugins.SqlExplainInterceptor">
+                    <property name="stopProceed" value="true"></property>
+                </bean>
+                <!--性能分析插件  适合在开发环境，不适合在生产环境-->
+                <bean class="com.baomidou.mybatisplus.plugins.PerformanceInterceptor">
+                    <property name="format" value="true"></property>
+                    <!--SQL语句的执行时间，超过会自动断掉此次操作-->
+                    <!--<property name="maxTime" value="1000"></property>-->
+                </bean>
+            </list>
+        </property>
     </bean>
 
     <!--MybatisPlus全局配置-->
     <bean id="globalConfiguration" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
         <property name="dbColumnUnderline" value="true"></property>
         <!--主键id的生成策略-->
-        <!--<property name="idType" value="0"></property>-->
+        <property name="idType" value="0"></property>
         <!--设置表明前缀（在数据库表明有统一都得情况下）-->
-       <!-- <property name="tablePrefix" value="tbl_"></property>-->
+        <property name="tablePrefix" value="tbl_"></property>
+        <!--注入自定义注入器-->
+        <property name="sqlInjector" ref="mysqlInJector"></property>
     </bean>
+
+    <!--定义自定义注入器-->
+    <bean class="com.atguigu.mp.myinjector.MysqlInJector" id="mysqlInJector"></bean>
 
     <!--扫描dao接口-->
     <bean id="configurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
