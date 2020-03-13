@@ -1,103 +1,132 @@
 package com.atguigu.test;
 
 import com.atguigu.mp.beans.Employee;
-import com.atguigu.mp.mapper.EmployeeMapper;
-import com.atguigu.mp.service.EmployeeService;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.List;
+
 public class EmployeeMapperTest {
-
     private ApplicationContext ioc = new ClassPathXmlApplicationContext("applicationContext.xml");
-    private EmployeeService employeeService= ioc.getBean("employeeService",EmployeeService.class);
+
     @Test
-    public void testInsert() {
+    public void insert() {
         Employee employee = new Employee();
-        employee.setLastName("MP5");
-        employee.setEmail("123@qq.com");
-        employee.setAge(23);
+        employee.setLastName("SunWuKong");
+        employee.setEmail("swk@qq.com");
+        employee.setAge(863);
         employee.setGender(1);
-        Integer relust = employeeService.insert(employee);
-        System.out.println("relust:" + relust);
-
+        boolean result = employee.insert();
+        System.out.println(result);
     }
 
     @Test
-    public void testInsertAllColumn() {
+    public void selectAll() {
+
+        Employee employee = new Employee();
+        List<Employee> employees = employee.selectAll();
+        for (Employee employee1 : employees) {
+            System.out.println(employee1);
+        }
+    }
+    @Test
+    public void selectList() {
+
+        Employee employee = new Employee();
+        List<Employee> employees = employee.selectList(new EntityWrapper<Employee>().like("last_name", "T"));
+        for (Employee employee1 : employees) {
+            System.out.println(employee1);
+        }
     }
 
     @Test
-    public void testDeleteById() {
+    public void selectCount() {
+
+        Employee employee = new Employee();
+        //全表查询
+        int count = employee.selectCount(null);
+        System.out.println("全表查询"+count);
+        int genderCount = employee.selectCount(new EntityWrapper<Employee>().eq("gender", 1));
+        System.out.println("性别为男的"+genderCount);
+    }
+    @Test
+    public void selectById() {
+        Employee employee = new Employee();
+        //Employee result = employee.selectById(6);
+        employee.setId(17);
+        Employee result =  employee.selectById();
+        System.out.println(result);
+    }
+    @Test
+    public void deleteById() {
+        Employee employee = new Employee();
+        //boolean result = employee.deleteById(2);
+        employee.setId(3);
+        boolean result = employee.deleteById();
+        System.out.println(result);
     }
 
     @Test
-    public void testDeleteByMap() {
+    public void insertAllColumn() {
+    }
+
+
+
+    @Test
+    public void deleteByMap() {
     }
 
     @Test
-    public void testDelete() {
+    public void delete() {
     }
 
     @Test
-    public void testDeleteBatchIds() {
+    public void deleteBatchIds() {
     }
 
     @Test
-    public void testUpdateById() {
+    public void updateById() {
     }
 
     @Test
-    public void testUpdateAllColumnById() {
+    public void updateAllColumnById() {
     }
 
     @Test
-    public void testUpdate() {
+    public void update() {
     }
 
     @Test
-    public void testUpdateForSet() {
+    public void updateForSet() {
     }
 
     @Test
-    public void testSelectById() {
+    public void selectBatchIds() {
     }
 
     @Test
-    public void testSelectBatchIds() {
+    public void selectByMap() {
     }
 
     @Test
-    public void testSelectByMap() {
+    public void selectOne() {
     }
 
     @Test
-    public void testSelectOne() {
+    public void selectMaps() {
     }
 
     @Test
-    public void testSelectCount() {
+    public void selectObjs() {
     }
 
     @Test
-    public void testSelectList() {
+    public void selectPage() {
     }
 
     @Test
-    public void testSelectMaps() {
+    public void selectMapsPage() {
     }
-
-    @Test
-    public void testSelectObjs() {
-    }
-
-    @Test
-    public void testSelectPage() {
-    }
-
-    @Test
-    public void testSelectMapsPage() {
-    }
-
 }

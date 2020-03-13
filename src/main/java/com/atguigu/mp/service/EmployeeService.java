@@ -7,12 +7,4 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmployeeService {
-
-    @Autowired
-    private EmployeeMapper employeeMapper;
-
-    public Integer insert(Employee employee){
-        return employeeMapper.insert(employee);
-
-    }
 }

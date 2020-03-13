@@ -1,15 +1,19 @@
 package com.atguigu.mp.beans;
 
+import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
+
+import java.io.Serializable;
 
 //已经配置全局配置取代
 /*
 * 对应数据库表
 * */
 @TableName(value = "tbl_employee")
-public class Employee {
+//AR模式继承Model<实体类>
+public class Employee extends Model<Employee> {
 	//已经配置全局配置取代
 	@TableId(type = IdType.AUTO)
 	private Integer id;
@@ -23,6 +27,11 @@ public class Employee {
 	private Integer age;
 
 	public Employee() {
+	}
+
+	@Override
+	protected Serializable pkVal() {
+		return id;
 	}
 
 	public Employee(Integer id, String lastName, String email, Integer gender, Integer age) {
