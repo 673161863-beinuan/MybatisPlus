@@ -1,6 +1,5 @@
 package com.atguigu.test;
 
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
@@ -9,7 +8,6 @@ import com.atguigu.mp.beans.Employee;
 import com.atguigu.mp.mapper.EmployeeMapper;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
